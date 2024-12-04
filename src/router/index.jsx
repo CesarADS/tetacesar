@@ -8,6 +8,10 @@ const router = createBrowserRouter([
       path: "/",
       element:  <Page></Page>,
     },
+    {
+      path: '/CentroDeInovacao',
+      element: <Page></Page>,
+    }
     
 ]);
 

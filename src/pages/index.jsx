@@ -1,7 +1,8 @@
+import { TopBar } from "../components/TopBar"
 
 
 
 export const Page = () => {
 
-    return <h1> oiiiii</h1>
+    return <TopBar></TopBar>
 } 
