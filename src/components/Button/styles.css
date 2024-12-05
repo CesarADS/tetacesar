@@ -15,4 +15,13 @@
   .botao:hover {
     background-color: #cc0000; /* Vermelho escuro */
     transform: scale(1.05);
+  }  
+  
+  @media (min-width: 600px) {
+
+    .botao {
+        margin-top: 0;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
   }

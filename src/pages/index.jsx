@@ -4,10 +4,10 @@ import './styles.css'
 
 
 
-export const Page = () => {
+export const Home = () => {
 
     return (
-        <body>
+        <body className="home-body">
             <TopBar></TopBar>
             <div className="container">
                 <div className="content">
@@ -16,7 +16,7 @@ export const Page = () => {
                     <div className="options">
                         <Button text="Centros de Inovação" to="/centros-de-inovacao"></Button>
                         <Button text="Parques Científicos" to="/parques-cientificos"></Button>
-                        <Button text="Coworkings" to="/coworkings"></Button>
+                        <Button text="Coworkings"          to="/coworkings"></Button>
                     </div>
                 </div>
             </div>

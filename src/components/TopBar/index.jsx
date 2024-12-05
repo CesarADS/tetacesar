@@ -1,13 +1,33 @@
+import { useLocation, useNavigate } from 'react-router-dom'
+import { ButtonTopBar } from '../ButtonTopBar'
 import './styles.css'
 
 export const TopBar = () => {
+    const navigate = useNavigate()
+    const location = useLocation()
+    
+    const isHome = location.pathname === '/' ? true : false
+
+    const handleClick = () => {
+        if(isHome)console.log('fodase')
+        navigate('/')
+    }
+
+
     return (
         <header>
-            <div className="logo">
-                <img src="public/bandeira.png" alt="Bandeira de Santa Catarina" className="bandeira"/>
+            <div className='top-div'>
+            <ButtonTopBar onClick={() => handleClick()} >
+                { isHome ? 'Area do adiministrador' : <img src="/home.png" className='home-icon'/>}
+            </ButtonTopBar>
+            </div>
+            <div className="logo top-div">
+                <img src="/bandeira.png" alt="Bandeira de Santa Catarina" className="bandeira"/>
                 <h1>Conecta Inovação</h1>
             </div>
-            <a onClick="autenticar()" className="admin-button">Área do Administrador</a>
+            <div className='top-div'>
+
+            </div>
         </header>
     )
 }
