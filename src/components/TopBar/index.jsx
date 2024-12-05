@@ -1,7 +1,13 @@
+import './styles.css'
+
 export const TopBar = () => {
     return (
-        <div>
-            <h1> oiiii sou uma top bar </h1>
-        </div>
+        <header>
+            <div className="logo">
+                <img src="public/bandeira.png" alt="Bandeira de Santa Catarina" className="bandeira"/>
+                <h1>Conecta Inovação</h1>
+            </div>
+            <a onclick="autenticar()" className="admin-button">Área do Administrador</a>
+        </header>
     )
 }
