@@ -1,5 +1,5 @@
-import { Button } from "../components/Button"
-import { TopBar } from "../components/TopBar"
+import { Button } from "../../components/Button"
+import { TopBar } from "../../components/TopBar"
 import './styles.css'
 
 
