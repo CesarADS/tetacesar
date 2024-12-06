@@ -11,6 +11,7 @@ import { Coworkings } from "../pages/Public/Coworkings";
 import { EditCentroDeInovacaoAdmin } from "../pages/Admin/CentroDeInovacaoAdmin/EditCentroDeInovacao";
 import { CentroDeInovacaoAdmin } from "../pages/Admin/CentroDeInovacaoAdmin";
 import { AdicionarCentroDeInovacaoAdmin } from "../pages/Admin/CentroDeInovacaoAdmin/AdicionarCentroDeInovacao";
+import { ProtectedRoute } from "./ProtectedRoute";
 
 
 const router = createBrowserRouter([
@@ -44,7 +45,7 @@ const router = createBrowserRouter([
     },
     {
       path: "/admin",
-      element: <AdminHome></AdminHome>,
+      element: <ProtectedRoute><AdminHome></AdminHome></ProtectedRoute>,
     },
     {
       path: "/centros-de-inovacao-admin",

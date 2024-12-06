@@ -5,7 +5,7 @@ import './styles.css'
 
 
 export const Home = () => {
-
+    
     return (
         <body className="home-body">
             <TopBar></TopBar>
