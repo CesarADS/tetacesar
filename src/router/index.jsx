@@ -4,6 +4,10 @@ import { Home } from "../pages/Public/index";
 import { CentroDeInovacao } from "../pages/Public/CentroDeInovacao";
 import { DetalhesCentroDeInovacao } from "../pages/Public/CentroDeInovacao/DetalhesCentroDeInovacao";
 import { AdminHome } from "../pages/Admin";
+import { ParquesCientificos } from "../pages/Public/ParquesCientificos";
+import { DetalhesParquesCientificos } from "../pages/Public/ParquesCientificos/DetalhesParquesCientificos";
+import { DetalhesCoworkings } from "../pages/Public/Coworkings/DetalhesCoworkings";
+import { Coworkings } from "../pages/Public/Coworkings";
 
 
 const router = createBrowserRouter([
@@ -17,11 +21,19 @@ const router = createBrowserRouter([
     },
     {
       path: '/coworkings',
-      element: <Home></Home>,
+      element: <Coworkings></Coworkings>,
+    },
+    {
+      path: '/detalhes-coworking/:id',
+      element: <DetalhesCoworkings></DetalhesCoworkings>,
     },
     {
       path: '/parques-cientificos',
-      element: <Home></Home>,
+      element: <ParquesCientificos></ParquesCientificos>,
+    },
+    {
+      path: '/detalhes-parque-cientifico/:id',
+      element: <DetalhesParquesCientificos></DetalhesParquesCientificos>,
     },
     {
       path: "/detalhes-centro-de-inovacao/:id",

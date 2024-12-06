@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom"
 
 
 
-export const CentroDeInovacao = () => {
+export const ParquesCientificos = () => {
     const [ response, setResponse ] = useState([])
     const [ data, setData ] = useState([])
     const [ loading, setLoading ] = useState(false)
@@ -16,7 +16,7 @@ export const CentroDeInovacao = () => {
     useEffect(() => {
         setLoading(true)
         try {
-            fetch('http://localhost:8080/CentrosInovacao/carregar')
+            fetch('http://localhost:8080/ParquesCientificos/carregar')
             .then(response => response.json())
             .then(data => setResponse(data))
             .catch(error => console.log(error))
@@ -77,7 +77,7 @@ export const CentroDeInovacao = () => {
         <body>
             <TopBar></TopBar>
             <main>
-                <h1> Centros de Inovação </h1>
+                <h1> Parques Científicos </h1>
                 {
                     loading ? <p>Carregando...</p> 
                     :
@@ -90,7 +90,7 @@ export const CentroDeInovacao = () => {
                                         key={i} 
                                         infoObject={object} 
                                         title={object.Titulo} 
-                                        onClick={() =>  location(`/detalhes-centro-de-inovacao/${object.id}`)}>
+                                        onClick={() =>  location(`/detalhes-parque-cientifico/${object.id}`)}>
                                         </Card>
                                     ))
                                     
