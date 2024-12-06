@@ -16,21 +16,21 @@ export const AuthProvider = ({ children }) => {
     };
 
     const [token, setToken] = useState(getLoginByLocalStorage);
-
+    
     const verificarToken = async () => {
+        
         if (token) {
             try {
-                const response = await fetch("http://localhost:8080/usuarios/verificarLogin/", {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+
+                const headers = {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                };
+                const response = await fetch("http://localhost:8080/usuarios/verificarLogin/", { method: 'GET', headers: headers });
                 console.log(response)
-                if (response.status === 200) {
-                    return token;
-                }
+                if (response.status === 200) return token 
                 return null;
+                
             } catch (error) {
                 console.error("Erro ao verificar token:", error);
                 return null;
