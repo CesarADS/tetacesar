@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import axios from "axios";
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -17,21 +16,29 @@ export const AuthProvider = ({ children }) => {
     };
 
     const [token, setToken] = useState(getLoginByLocalStorage);
-    const verificarToken = () => {
-        if(token){
-            const response = axios.get("http://localhost:8080/usuarios/verificarLogin/", {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
 
-            if(response.status === 200){
-                return token
+    const verificarToken = async () => {
+        if (token) {
+            try {
+                const response = await fetch("http://localhost:8080/usuarios/verificarLogin/", {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                console.log(response)
+                if (response.status === 200) {
+                    return token;
+                }
+                return null;
+            } catch (error) {
+                console.error("Erro ao verificar token:", error);
+                return null;
             }
-            return null
         }
-        return null
-    }
+        return null;
+    };
+
     useEffect(() => {
         const storedData = getLoginByLocalStorage();
         if (storedData) setToken(storedData);

@@ -2,18 +2,35 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { ButtonTopBar } from '../ButtonTopBar'
 import './styles.css'
 import axios from 'axios'
+import { useAuth } from '../../hooks/useAuth'
 
 export const TopBar = () => {
     const navigate = useNavigate()
     const location = useLocation()
     
+    const auth = useAuth()
+    
     const isHome = location.pathname === '/' ? true : false
     const isAdmin = location.pathname.includes('-admin') ? true : false
 
-    const showAlertWithInput = () => {
+    const showAlertWithInput = async () => {
+
         const userInput = prompt("Digite a senha do administrador:");
-        const response = axios.post("http://localhost:8080/login", { username: 'admin', password: userInput})
-        if (userInput !== null) return navigate('/admin')
+        
+        const response = await axios.post("http://localhost:8080/usuarios/login", 
+            {
+                login: 'admin', 
+                senha: userInput
+            }, 
+            {
+                'Content-Type': 'application/json'
+            })
+
+        if (response.status == 200) {
+            auth.login(response.data.token)
+            return navigate('/admin')
+        }
+
         else alert("Você cancelou a entrada.");
     }
 
