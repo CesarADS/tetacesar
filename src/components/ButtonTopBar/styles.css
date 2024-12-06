@@ -1,6 +1,6 @@
 .admin-button {
     color: white;
-    background-color: #007bff; /* Azul */
+    background-color: #007bff;
     text-decoration: none;
     border-radius: 5px;
     transition: background-color 0.3s;
@@ -8,5 +8,5 @@
   }
   
   .admin-button:hover {
-    background-color: #0056b3; /* Azul escuro */
+    background-color: #0056b3;
   }

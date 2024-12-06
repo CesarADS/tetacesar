@@ -7,9 +7,11 @@ export const TopBar = () => {
     const location = useLocation()
     
     const isHome = location.pathname === '/' ? true : false
+    const isAdmin = location.pathname.includes('-admin') ? true : false
     const handleClick = () => {
         if(isHome)return navigate('/admin')
-
+        if(isAdmin)return navigate(-1)
+    
         navigate('/')
     }
 

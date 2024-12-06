@@ -8,6 +8,9 @@ import { ParquesCientificos } from "../pages/Public/ParquesCientificos";
 import { DetalhesParquesCientificos } from "../pages/Public/ParquesCientificos/DetalhesParquesCientificos";
 import { DetalhesCoworkings } from "../pages/Public/Coworkings/DetalhesCoworkings";
 import { Coworkings } from "../pages/Public/Coworkings";
+import { EditCentroDeInovacaoAdmin } from "../pages/Admin/CentroDeInovacaoAdmin/EditCentroDeInovacao";
+import { CentroDeInovacaoAdmin } from "../pages/Admin/CentroDeInovacaoAdmin";
+import { AdicionarCentroDeInovacaoAdmin } from "../pages/Admin/CentroDeInovacaoAdmin/AdicionarCentroDeInovacao";
 
 
 const router = createBrowserRouter([
@@ -45,7 +48,15 @@ const router = createBrowserRouter([
     },
     {
       path: "/centros-de-inovacao-admin",
-      element: <Home></Home>,
+      element: <CentroDeInovacaoAdmin></CentroDeInovacaoAdmin>,
+    },
+    {
+      path: "/centros-de-inovacao-admin/:id",
+      element: <EditCentroDeInovacaoAdmin></EditCentroDeInovacaoAdmin>,
+    },
+    {
+      path: "/centros-de-inovacao-admin/adicionar",
+      element: <AdicionarCentroDeInovacaoAdmin></AdicionarCentroDeInovacaoAdmin>,
     },
     {
       path: "/parques-cientificos-admin",

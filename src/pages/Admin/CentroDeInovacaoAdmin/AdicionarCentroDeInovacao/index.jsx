@@ -2,12 +2,12 @@ import { useState } from "react";
 import { TopBar } from "../../../../components/TopBar";
 import "./styles.css";
 
-export const EditCentroDeInovacaoAdmin = () => {
-    const [nome, setNome] = useState("Centro de Inovação Alpha");
-    const [tipo, setTipo] = useState("Tecnologia");
-    const [estado, setEstado] = useState("RJ");
-    const [dataFundacao, setDataFundacao] = useState("01/01/2000");
-    const [numero, setNumero] = useState(12345);
+export const AdicionarCentroDeInovacaoAdmin = () => {
+    const [nome, setNome] = useState("");
+    const [tipo, setTipo] = useState("");
+    const [estado, setEstado] = useState("");
+    const [dataFundacao, setDataFundacao] = useState("");
+    const [numero, setNumero] = useState("");
 
     // Formata a data para dd/mm/yyyy
     const formatDateToDDMMYYYY = (date) => {
@@ -31,7 +31,13 @@ export const EditCentroDeInovacaoAdmin = () => {
     };
 
     const onConfirm = () => {
-        console.log("Valores salvos:", { nome, tipo, estado, dataFundacao, numero });
+        console.log("Novo Centro de Inovação Adicionado:", {
+            nome,
+            tipo,
+            estado,
+            dataFundacao,
+            numero,
+        });
     };
 
     return (
@@ -40,7 +46,7 @@ export const EditCentroDeInovacaoAdmin = () => {
             <main className="admin-edit-container">
                 <div className="admin-edit-card">
                     <div className="card-content-inputs">
-                        <h1>Cadastro/Edição de Centro de Inovação</h1>
+                        <h1>Adicionar Centro de Inovação</h1>
                     </div>
                     <div className="card-content-inputs">
                         <label htmlFor="nome">Nome do Centro de Inovação</label>
@@ -92,7 +98,7 @@ export const EditCentroDeInovacaoAdmin = () => {
                         />
                     </div>
                     <button className="admin-edit-button" onClick={onConfirm}>
-                        Salvar
+                        Adicionar
                     </button>
                 </div>
             </main>
