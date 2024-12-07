@@ -4,7 +4,7 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const { setItem, getItem } = useLocalStorage();
+    const { setItem, getItem, removeItem } = useLocalStorage();
 
     const getLoginByLocalStorage = () => {
         const token = getItem('token');
@@ -24,9 +24,8 @@ export const AuthProvider = ({ children }) => {
 
                 const headers = {
                     Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
                 };
-                const response = await fetch("http://localhost:8080/usuarios/verificarLogin/", { method: 'GET', headers: headers });
+                const response = await fetch("http://localhost:8080/usuarios/verificarLogin", { method: 'GET', headers: headers });
                 console.log(response)
                 if (response.status === 200) return token 
                 return null;
@@ -39,10 +38,25 @@ export const AuthProvider = ({ children }) => {
         return null;
     };
 
+    const logout = () => {
+        removeItem('token');
+        setToken(null);
+        setIsAuthenticated(false);
+    };
+
     useEffect(() => {
+        if (token) {
+            (async () => {
+            const tokenVerificado = await verificarToken()
+            if (!tokenVerificado) {
+                logout()
+                alert("Token expirado!")
+                return
+            }})()
+        }
         const storedData = getLoginByLocalStorage();
         if (storedData) setToken(storedData);
-    }, []);
+    }, [isAuthenticated]);
 
     const login = (token) => {
         setItem('token', token);

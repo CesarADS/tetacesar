@@ -1,13 +1,22 @@
 import { useState } from "react";
 import { TopBar } from "../../../../components/TopBar";
 import "./styles.css";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../../hooks/useAuth";
+import axios from "axios";
 
 export const AdicionarCentroDeInovacaoAdmin = () => {
+
+    const { token } = useAuth();
+    const navigate = useNavigate("");
     const [nome, setNome] = useState("");
-    const [tipo, setTipo] = useState("");
     const [estado, setEstado] = useState("");
     const [dataFundacao, setDataFundacao] = useState("");
-    const [numero, setNumero] = useState("");
+    const [cidade, setCidade] = useState("");
+    const [endereco, setEndereco] = useState("");
+    const [descricao, setDescricao] = useState("");
+    const [link, setLink] = useState("");
+    const [telefone, setTelefone] = useState("");
 
     // Formata a data para dd/mm/yyyy
     const formatDateToDDMMYYYY = (date) => {
@@ -30,14 +39,20 @@ export const AdicionarCentroDeInovacaoAdmin = () => {
         setDataFundacao(formattedDate); // Atualiza o estado
     };
 
-    const onConfirm = () => {
-        console.log("Novo Centro de Inovação Adicionado:", {
-            nome,
-            tipo,
-            estado,
-            dataFundacao,
-            numero,
-        });
+    const onConfirm = async () => {
+        const fetchData = await axios.post("http://localhost:8080/CentrosInovacao/criar", {
+            cidade: cidade,
+            estado: estado,
+            nome: nome,
+            endereco: endereco,
+            cep: 456456464,
+            data: formatDateToYYYYMMDD(dataFundacao),
+            descricao: descricao,
+            link: link,
+            telefone: telefone
+        }, 
+        {headers: {Authorization: `Bearer ${token}`}})
+        navigate(-1)
     };
 
     return (
@@ -59,13 +74,33 @@ export const AdicionarCentroDeInovacaoAdmin = () => {
                         />
                     </div>
                     <div className="card-content-inputs">
-                        <label htmlFor="tipo">Tipo do Centro de Inovação</label>
+                        <label htmlFor="cidade">Cidade</label>
                         <input
-                            id="tipo"
+                            id="cidade"
                             type="text"
-                            value={tipo}
-                            onChange={(e) => setTipo(e.target.value)}
-                            placeholder="Tipo do Centro de Inovação"
+                            value={cidade}
+                            onChange={(e) => setCidade(e.target.value)}
+                            placeholder="Nome do Centro de Inovação"
+                        />
+                    </div>
+                    <div className="card-content-inputs">
+                        <label htmlFor="endereco">endereco do Centro de Inovação</label>
+                        <input
+                            id="endereco"
+                            type="text"
+                            value={endereco}
+                            onChange={(e) => setEndereco(e.target.value)}
+                            placeholder="endereco do Centro de Inovação"
+                        />
+                    </div>
+                    <div className="card-content-inputs">
+                        <label htmlFor="descricao">descricao do Centro de Inovação</label>
+                        <input
+                            id="descricao"
+                            type="text"
+                            value={descricao}
+                            onChange={(e) => setDescricao(e.target.value)}
+                            placeholder="descricao do Centro de Inovação"
                         />
                     </div>
                     <div className="card-content-inputs">
@@ -88,13 +123,23 @@ export const AdicionarCentroDeInovacaoAdmin = () => {
                         />
                     </div>
                     <div className="card-content-inputs">
-                        <label htmlFor="numero">Numero</label>
+                        <label htmlFor="telefone">telefone do Centro de Inovação</label>
                         <input
-                            id="numero"
+                            id="telefone"
                             type="number"
-                            value={numero}
-                            onChange={(e) => setNumero(e.target.value)}
-                            placeholder="12345"
+                            value={telefone}
+                            onChange={(e) => setTelefone(e.target.value)}
+                            placeholder="telefone do Centro de Inovação"
+                        />
+                    </div>
+                    <div className="card-content-inputs">
+                        <label htmlFor="link">link do Centro de Inovação</label>
+                        <input
+                            id="link"
+                            type="text"
+                            value={link}
+                            onChange={(e) => setLink(e.target.value)}
+                            placeholder="link do Centro de Inovação"
                         />
                     </div>
                     <button className="admin-edit-button" onClick={onConfirm}>

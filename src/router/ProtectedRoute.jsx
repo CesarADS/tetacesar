@@ -8,8 +8,12 @@ export const ProtectedRoute = ({ children }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = verificarToken()
-        if(!token)navigate('/')
+        (async () => {
+            const token = await verificarToken()
+            if(!token) {
+                navigate("/")
+            }
+        })()
         if (!isAuthenticated)navigate('/');
     },[isAuthenticated, navigate , verificarToken]);
     

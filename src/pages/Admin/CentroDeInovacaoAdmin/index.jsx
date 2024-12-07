@@ -1,37 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./styles.css";
 import {  useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useAuth } from "../../../hooks/useAuth";
 
 export const CentroDeInovacaoAdmin = () => {
+    
+    const {token} = useAuth()
     const navigate = useNavigate()
-    const [data, setData] = useState([
-        {
-            id: 1,
-            nome: "Empresa Alpha",
-            cidade: "Rio de Janeiro",
-            estado: "RJ",
-            enderecoCep: "20000-000",
-            dataFundacao: "01/01/2000",
-            descricao: "Empresa especializada em tecnologia.",
-            link: "https://empresaalpha.com",
-            telefone: "(21) 1234-5678",
-        },
-        {
-            id: 2,
-            nome: "Empresa Beta",
-            cidade: "São Paulo",
-            estado: "SP",
-            enderecoCep: "01000-000",
-            dataFundacao: "15/05/1995",
-            descricao: "Empresa de consultoria empresarial.",
-            link: "https://empresabeta.com",
-            telefone: "(11) 9876-5432",
-        },
-    ]);
+    const [data, setData] = useState()
+    const [response, setResponse] = useState()
+
+    const fetchData = async () => {
+        try {
+            const response = await axios.get("http://localhost:8080/CentrosInovacao/carregar")
+            setResponse(response?.data)
+        } finally {
+        }
+    }
+
+    const fetchDataDelete = async (id) => {
+        try {
+            const response = await axios.delete("http://localhost:8080/CentrosInovacao/excluir/" + id, {headers: {Authorization: `Bearer ${token}`}})
+            fetchData()
+        } finally {
+        }
+    }
+
+    useEffect(() => {
+        fetchData()
+    }, [])
+
+    useEffect(() => {
+        setData(response)
+    }, [response, fetchDataDelete]
+    )
 
     const handleDelete = (id) => {
-        const filteredData = data.filter((item) => item.id !== id);
-        setData(filteredData);
+        fetchDataDelete(id)
     };
 
     return (
@@ -64,7 +70,7 @@ export const CentroDeInovacaoAdmin = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {data.map((item) => (
+                            {data?.length>0?data.map((item) => (
                                 <tr key={item.id}>
                                     <td>
                                         <button className="edit-btn" onClick={() => navigate(`/centros-de-inovacao-admin/${item.id}`)}>
@@ -83,8 +89,8 @@ export const CentroDeInovacaoAdmin = () => {
                                     <td>{item.nome}</td>
                                     <td>{item.cidade}</td>
                                     <td>{item.estado}</td>
-                                    <td>{item.enderecoCep}</td>
-                                    <td>{item.dataFundacao}</td>
+                                    <td>{item.endereco}</td>
+                                    <td>{item.data}</td>
                                     <td>{item.descricao}</td>
                                     <td>
                                         <a
@@ -97,7 +103,7 @@ export const CentroDeInovacaoAdmin = () => {
                                     </td>
                                     <td>{item.telefone}</td>
                                 </tr>
-                            ))}
+                            )):null}
                         </tbody>
                     </table>
                 </div>

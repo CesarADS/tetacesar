@@ -49,15 +49,15 @@ const router = createBrowserRouter([
     },
     {
       path: "/centros-de-inovacao-admin",
-      element: <CentroDeInovacaoAdmin></CentroDeInovacaoAdmin>,
+      element: <ProtectedRoute><CentroDeInovacaoAdmin></CentroDeInovacaoAdmin></ProtectedRoute>,
     },
     {
       path: "/centros-de-inovacao-admin/:id",
-      element: <EditCentroDeInovacaoAdmin></EditCentroDeInovacaoAdmin>,
+      element: <ProtectedRoute><EditCentroDeInovacaoAdmin></EditCentroDeInovacaoAdmin></ProtectedRoute>,
     },
     {
       path: "/centros-de-inovacao-admin/adicionar",
-      element: <AdicionarCentroDeInovacaoAdmin></AdicionarCentroDeInovacaoAdmin>,
+      element: <ProtectedRoute><AdicionarCentroDeInovacaoAdmin></AdicionarCentroDeInovacaoAdmin></ProtectedRoute>,
     },
     {
       path: "/parques-cientificos-admin",
