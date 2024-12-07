@@ -26,7 +26,6 @@ export const AuthProvider = ({ children }) => {
                     Authorization: `Bearer ${token}`,
                 };
                 const response = await fetch("http://localhost:8080/usuarios/verificarLogin", { method: 'GET', headers: headers });
-                console.log(response)
                 if (response.status === 200) return token 
                 return null;
                 
@@ -50,7 +49,6 @@ export const AuthProvider = ({ children }) => {
             const tokenVerificado = await verificarToken()
             if (!tokenVerificado) {
                 logout()
-                alert("Token expirado!")
                 return
             }})()
         }
