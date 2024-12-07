@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { TopBar } from "../../../../components/TopBar";
 import "./styles.css";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../../hooks/useAuth";
-import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
-export const EditCentroDeInovacaoAdmin = () => {
-    const { id } = useParams();
+export const AdicionarParqueCientificoAdmin = () => {
+
     const { token } = useAuth();
+    const navigate = useNavigate("");
     const [nome, setNome] = useState("");
     const [estado, setEstado] = useState("");
     const [dataFundacao, setDataFundacao] = useState("");
@@ -17,77 +18,49 @@ export const EditCentroDeInovacaoAdmin = () => {
     const [link, setLink] = useState("");
     const [telefone, setTelefone] = useState("");
     const [cep, setCep] = useState("");
+    const [instituicao_financeira, setInstituicao_financeira] = useState("");
 
-    const [response, setResponse] = useState();
-
-    const navigate = useNavigate();
-
-    const fetchData = async () => {
-        try {
-            const response = await axios.get("http://localhost:8080/CentrosInovacao/carregar/" + Number(id));
-            setResponse(response?.data);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
+    // Formata a data para dd/mm/yyyy
+    const formatDateToDDMMYYYY = (date) => {
+        if (!date) return "";
+        const [year, month, day] = date.split("-");
+        return `${day}/${month}/${year}`;
     };
 
-    useEffect(() => {
-        fetchData();
-    }, [id]);
-
-    useEffect(() => {
-        if (response) {
-            setNome(response?.nome);
-            setEstado(response?.estado);
-            
-            // Certifique-se de formatar a data para o formato yyyy-mm-dd
-            const formattedDate = response?.data ? formatDateToYYYYMMDD(response?.data) : "";
-            setDataFundacao(formattedDate); // Agora 'data' será no formato correto
-            
-            setCep(response?.cep);
-            setCidade(response?.cidade);
-            setEndereco(response?.endereco);
-            setDescricao(response?.descricao);
-            setLink(response?.link);
-            setTelefone(response?.telefone);
-        }
-    }, [response]);
-    
-    // Função para garantir que a data esteja no formato yyyy-mm-dd
+    // Formata a data para yyyy-mm-dd
     const formatDateToYYYYMMDD = (date) => {
         if (!date) return "";
-        const [year, month, day] = date.split("-"); // Supondo que a data seja no formato yyyy-mm-dd
-        return `${year}-${month}-${day}`; // Retorna no formato correto para input[type="date"]
+        const [day, month, year] = date.split("/");
+        return `${year}-${month}-${day}`;
     };
 
     // Atualiza a data no formato dd/mm/yyyy
     const handleDateChange = (e) => {
         const value = e.target.value; // Valor no formato yyyy-mm-dd
-        setDataFundacao(value); // Atualiza a data com o valor formatado corretamente
+        const formattedDate = formatDateToDDMMYYYY(value); // Converte para dd/mm/yyyy
+        setDataFundacao(formattedDate); // Atualiza o estado
     };
 
     const onConfirm = async () => {
-        try {
-            await axios.put(
-                "http://localhost:8080/CentrosInovacao/atualizar/" + id,
-                {
-                    cidade: cidade,
-                    estado: estado,
-                    nome: nome,
-                    endereco: endereco,
-                    cep: cep,
-                    data: formatDateToYYYYMMDD(dataFundacao), // Passa a data no formato yyyy-mm-dd para o servidor
-                    descricao: descricao,
-                    link: link,
-                    telefone: telefone,
-                },
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
-            alert("Agente editado com sucesso!")
+        
+        try{
+            const fetchData = await axios.post("http://localhost:8080/ParquesCientificos/criar", {
+                cidade: cidade,
+                estado: estado,
+                nome: nome,
+                endereco: endereco,
+                cep: cep,
+                data: formatDateToYYYYMMDD(dataFundacao),
+                descricao: descricao,
+                link: link,
+                telefone: telefone,
+                instituicao_financeira: instituicao_financeira
+            }, 
+            {headers: {Authorization: `Bearer ${token}`}})
+            navigate(-1)
+            alert("Agente adicionado!")
         } catch (error) {
             alert("Algo deu errado!")
-        } finally {
-            navigate(-1)
         }
     };
 
@@ -97,8 +70,8 @@ export const EditCentroDeInovacaoAdmin = () => {
             <main className="admin-edit-container">
                 <div className="admin-edit-card">
                     <div className="card-content-inputs">
-                        <h1>Edição de Centro de Inovação</h1>
-                        </div>
+                        <h1>Adicionar Parque Científico</h1>
+                    </div>
                     <div className="card-content-inputs">
                         <label htmlFor="nome">Nome</label>
                         <input
@@ -106,7 +79,7 @@ export const EditCentroDeInovacaoAdmin = () => {
                             type="text"
                             value={nome}
                             onChange={(e) => setNome(e.target.value)}
-                            placeholder="Nome do Centro de Inovação"
+                            placeholder="Nome do Parque Científico"
                         />
                     </div>
                     <div className="card-content-inputs">
@@ -116,7 +89,7 @@ export const EditCentroDeInovacaoAdmin = () => {
                             type="text"
                             value={cidade}
                             onChange={(e) => setCidade(e.target.value)}
-                            placeholder="Nome do Centro de Inovação"
+                            placeholder="Cidade do Parque Científico"
                         />
                     </div>
                     <div className="card-content-inputs">
@@ -126,17 +99,7 @@ export const EditCentroDeInovacaoAdmin = () => {
                             type="text"
                             value={endereco}
                             onChange={(e) => setEndereco(e.target.value)}
-                            placeholder="endereco do Centro de Inovação"
-                        />
-                    </div>
-                    <div className="card-content-inputs">
-                        <label htmlFor="cep">CEP</label>
-                        <input
-                            id="cep"
-                            type="number"
-                            value={cep}
-                            onChange={(e) => setCep(e.target.value)}
-                            placeholder="CEP do Centro de Inovação"
+                            placeholder="Endereço do Parque Científico"
                         />
                     </div>
                     <div className="card-content-inputs">
@@ -146,7 +109,7 @@ export const EditCentroDeInovacaoAdmin = () => {
                             type="text"
                             value={descricao}
                             onChange={(e) => setDescricao(e.target.value)}
-                            placeholder="descricao do Centro de Inovação"
+                            placeholder="Descrição do Parque Científico"
                         />
                     </div>
                     <div className="card-content-inputs">
@@ -156,7 +119,17 @@ export const EditCentroDeInovacaoAdmin = () => {
                             type="text"
                             value={estado}
                             onChange={(e) => setEstado(e.target.value)}
-                            placeholder="Estado do Centro de Inovação"
+                            placeholder="Estado do Parque Científico"
+                        />
+                    </div>
+                    <div className="card-content-inputs">
+                        <label htmlFor="cep">CEP</label>
+                        <input
+                            id="cep"
+                            type="number"
+                            value={cep}
+                            onChange={(e) => setCep(e.target.value)}
+                            placeholder="CEP do Parque Científico"
                         />
                     </div>
                     <div className="card-content-inputs">
@@ -164,8 +137,8 @@ export const EditCentroDeInovacaoAdmin = () => {
                         <input
                             id="dataFundacao"
                             type="date"
-                            value={dataFundacao} // Valor em yyyy-mm-dd, que é aceito pelo tipo date
-                            onChange={handleDateChange}
+                            value={formatDateToYYYYMMDD(dataFundacao)} // Formato compatível com o tipo date
+                            onChange={handleDateChange} // Atualiza no formato dd/mm/yyyy
                         />
                     </div>
                     <div className="card-content-inputs">
@@ -175,7 +148,7 @@ export const EditCentroDeInovacaoAdmin = () => {
                             type="number"
                             value={telefone}
                             onChange={(e) => setTelefone(e.target.value)}
-                            placeholder="telefone do Centro de Inovação"
+                            placeholder="Telefone do Parque Científico"
                         />
                     </div>
                     <div className="card-content-inputs">
@@ -185,11 +158,21 @@ export const EditCentroDeInovacaoAdmin = () => {
                             type="text"
                             value={link}
                             onChange={(e) => setLink(e.target.value)}
-                            placeholder="link do Centro de Inovação"
+                            placeholder="Site do Parque Científico"
+                        />
+                    </div>
+                    <div className="card-content-inputs">
+                        <label htmlFor="instituicao_financeira">Instituição financeira</label>
+                        <input
+                            id="instituicao_financeira"
+                            type="text"
+                            value={instituicao_financeira}
+                            onChange={(e) => setInstituicao_financeira(e.target.value)}
+                            placeholder="Instituição financeira do Parque Científico"
                         />
                     </div>
                     <button className="admin-edit-button" onClick={onConfirm}>
-                        Salvar
+                        Adicionar
                     </button>
                 </div>
             </main>

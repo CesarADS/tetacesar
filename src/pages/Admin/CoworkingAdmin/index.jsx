@@ -4,7 +4,7 @@ import {  useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../../hooks/useAuth";
 
-export const CentroDeInovacaoAdmin = () => {
+export const CoworkingAdmin = () => {
     
     const {token} = useAuth()
     const navigate = useNavigate()
@@ -13,7 +13,7 @@ export const CentroDeInovacaoAdmin = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get("http://localhost:8080/CentrosInovacao/carregar")
+            const response = await axios.get("http://localhost:8080/Coworkings/carregar")
             setResponse(response?.data)
         } finally {
         }
@@ -21,7 +21,7 @@ export const CentroDeInovacaoAdmin = () => {
 
     const fetchDataDelete = async (id) => {
         try {
-            const response = await axios.delete("http://localhost:8080/CentrosInovacao/excluir/" + id, {headers: {Authorization: `Bearer ${token}`}})
+            const response = await axios.delete("http://localhost:8080/Coworkings/excluir/" + id, {headers: {Authorization: `Bearer ${token}`}})
             fetchData()
         } finally {
         }
@@ -61,10 +61,10 @@ export const CentroDeInovacaoAdmin = () => {
                     <header className="card-header">
                         <div className="card-header-top-line">
                             <button className="card-header-button-home" onClick={() => navigate('/admin')}> <img src="/home.png" className='home-icon'/></button>
-                            <h1 className="title-card-header">Centros de Inovação</h1>
+                            <h1 className="title-card-header">Coworkings</h1>
                         </div>
                         <div className="card-header-bottom-line">
-                            <button className="card-header-button-add"  onClick={() => navigate('/centros-de-inovacao-admin/adicionar')}>+ Novo Centro</button>
+                            <button className="card-header-button-add"  onClick={() => navigate('/coworkings-admin/adicionar')}>+ Novo Coworking</button>
                         </div>
                     </header>
                     <table className="admin-table">
@@ -82,13 +82,14 @@ export const CentroDeInovacaoAdmin = () => {
                                 <th>Descrição</th>
                                 <th>Link</th>
                                 <th>Telefone</th>
+                                <th>Horário de Funcionamento</th>
                             </tr>
                         </thead>
                         <tbody>
                             {data?.length>0?data.map((item) => (
                                 <tr key={item.id}>
                                     <td>
-                                        <button className="edit-btn" onClick={() => navigate(`/centros-de-inovacao-admin/${item.id}`)}>
+                                        <button className="edit-btn" onClick={() => navigate(`/coworkings-admin/${item.id}`)}>
                                             <i className="fas fa-edit"></i>
                                         </button>
                                     </td>
@@ -118,6 +119,7 @@ export const CentroDeInovacaoAdmin = () => {
                                         </a>
                                     </td>
                                     <td>{item.telefone}</td>
+                                    <td>{item.horario_funcionamento}</td>
                                 </tr>
                             )):null}
                         </tbody>

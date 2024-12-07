@@ -17,21 +17,28 @@ export const TopBar = () => {
 
         const userInput = prompt("Digite a senha do administrador:");
         
-        const response = await axios.post("http://localhost:8080/usuarios/login", 
-            {
-                login: 'admin', 
-                senha: userInput
-            }, 
-            {
-                'Content-Type': 'application/json'
-            })
+        try {
+            const response = await axios.post("http://localhost:8080/usuarios/login", 
+                {
+                    login: 'admin', 
+                    senha: userInput
+                }, 
+                {
+                    'Content-Type': 'application/json'
+                })
 
-        if (response.status == 200) {
-            auth.login(response.data.token)
-            return navigate('/admin')
+            if (response.status == 200) {
+                auth.login(response.data.token)
+                return navigate('/admin')
+            }
+        } catch (error) {
+            if (error.response) {
+                alert("Senha root incorreta!")
+        } else {
+            alert("Algo deu errado!")
         }
 
-        else alert("Você cancelou a entrada.");
+    }
     }
 
     const handleClick = () => {
@@ -45,7 +52,7 @@ export const TopBar = () => {
         <header>
             <div className='top-div'>
             <ButtonTopBar onClick={() => handleClick()} >
-                { isHome ? 'Area do adiministrador' : <img src="/home.png" className='home-icon'/>}
+                { isHome ? 'Área do adiministrador' : <img src="/home.png" className='home-icon'/>}
             </ButtonTopBar>
             </div>
             <div className="logo top-div">

@@ -11,6 +11,7 @@ export const ProtectedRoute = ({ children }) => {
         (async () => {
             const token = await verificarToken()
             if(!token) {
+                alert("Token expirado!")
                 navigate("/")
             }
         })()

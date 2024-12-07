@@ -12,6 +12,12 @@ import { EditCentroDeInovacaoAdmin } from "../pages/Admin/CentroDeInovacaoAdmin/
 import { CentroDeInovacaoAdmin } from "../pages/Admin/CentroDeInovacaoAdmin";
 import { AdicionarCentroDeInovacaoAdmin } from "../pages/Admin/CentroDeInovacaoAdmin/AdicionarCentroDeInovacao";
 import { ProtectedRoute } from "./ProtectedRoute";
+import { ParqueCientificoAdmin } from "../pages/Admin/ParqueCientificoAdmin";
+import { AdicionarParqueCientificoAdmin } from "../pages/Admin/ParqueCientificoAdmin/AdicionarParqueCientifico";
+import { EditParqueCientificoAdmin } from "../pages/Admin/ParqueCientificoAdmin/EditParqueCientifico";
+import { CoworkingAdmin } from "../pages/Admin/CoworkingAdmin";
+import { AdicionarCoworkingAdmin } from "../pages/Admin/CoworkingAdmin/AdicionarCoworking";
+import { EditCoworkingAdmin } from "../pages/Admin/CoworkingAdmin/EditCoworking";
 
 
 const router = createBrowserRouter([
@@ -52,6 +58,18 @@ const router = createBrowserRouter([
       element: <ProtectedRoute><CentroDeInovacaoAdmin></CentroDeInovacaoAdmin></ProtectedRoute>,
     },
     {
+      path: "/coworkings-admin",
+      element: <ProtectedRoute><CoworkingAdmin></CoworkingAdmin></ProtectedRoute>,
+    },
+    {
+      path: "/coworkings-admin/adicionar",
+      element: <ProtectedRoute><AdicionarCoworkingAdmin></AdicionarCoworkingAdmin></ProtectedRoute>,
+    },
+    {
+      path: "/coworkings-admin/:id",
+      element: <ProtectedRoute><EditCoworkingAdmin></EditCoworkingAdmin></ProtectedRoute>,
+    },
+    {
       path: "/centros-de-inovacao-admin/:id",
       element: <ProtectedRoute><EditCentroDeInovacaoAdmin></EditCentroDeInovacaoAdmin></ProtectedRoute>,
     },
@@ -61,7 +79,15 @@ const router = createBrowserRouter([
     },
     {
       path: "/parques-cientificos-admin",
-      element: <Home></Home>,
+      element: <ProtectedRoute><ParqueCientificoAdmin></ParqueCientificoAdmin></ProtectedRoute>,
+    },
+    {
+      path: "/parques-cientificos-admin/adicionar",
+      element: <ProtectedRoute><AdicionarParqueCientificoAdmin></AdicionarParqueCientificoAdmin></ProtectedRoute>,
+    },
+    {
+      path: "/parques-cientificos-admin/:id",
+      element: <ProtectedRoute><EditParqueCientificoAdmin></EditParqueCientificoAdmin></ProtectedRoute>,
     },
     {
         path: "*",

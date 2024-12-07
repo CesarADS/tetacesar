@@ -5,7 +5,7 @@ import { useAuth } from "../../../../hooks/useAuth";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
-export const EditCentroDeInovacaoAdmin = () => {
+export const EditCoworkingAdmin = () => {
     const { id } = useParams();
     const { token } = useAuth();
     const [nome, setNome] = useState("");
@@ -17,6 +17,7 @@ export const EditCentroDeInovacaoAdmin = () => {
     const [link, setLink] = useState("");
     const [telefone, setTelefone] = useState("");
     const [cep, setCep] = useState("");
+    const [horario_funcionamento, setHorario_funcionamento] = useState("");
 
     const [response, setResponse] = useState();
 
@@ -24,10 +25,10 @@ export const EditCentroDeInovacaoAdmin = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get("http://localhost:8080/CentrosInovacao/carregar/" + Number(id));
+            const response = await axios.get("http://localhost:8080/Coworkings/carregar/" + Number(id));
             setResponse(response?.data);
         } catch (error) {
-            console.error("Error fetching data:", error);
+            console.error("Algo deu errado!");
         }
     };
 
@@ -44,6 +45,7 @@ export const EditCentroDeInovacaoAdmin = () => {
             const formattedDate = response?.data ? formatDateToYYYYMMDD(response?.data) : "";
             setDataFundacao(formattedDate); // Agora 'data' será no formato correto
             
+            setHorario_funcionamento(response?.horario_funcionamento);
             setCep(response?.cep);
             setCidade(response?.cidade);
             setEndereco(response?.endereco);
@@ -69,7 +71,7 @@ export const EditCentroDeInovacaoAdmin = () => {
     const onConfirm = async () => {
         try {
             await axios.put(
-                "http://localhost:8080/CentrosInovacao/atualizar/" + id,
+                "http://localhost:8080/Coworkings/atualizar/" + id,
                 {
                     cidade: cidade,
                     estado: estado,
@@ -80,6 +82,7 @@ export const EditCentroDeInovacaoAdmin = () => {
                     descricao: descricao,
                     link: link,
                     telefone: telefone,
+                    horario_funcionamento: horario_funcionamento
                 },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -97,8 +100,8 @@ export const EditCentroDeInovacaoAdmin = () => {
             <main className="admin-edit-container">
                 <div className="admin-edit-card">
                     <div className="card-content-inputs">
-                        <h1>Edição de Centro de Inovação</h1>
-                        </div>
+                    <h1>Editar Coworking</h1>
+                    </div>
                     <div className="card-content-inputs">
                         <label htmlFor="nome">Nome</label>
                         <input
@@ -106,7 +109,7 @@ export const EditCentroDeInovacaoAdmin = () => {
                             type="text"
                             value={nome}
                             onChange={(e) => setNome(e.target.value)}
-                            placeholder="Nome do Centro de Inovação"
+                            placeholder="Nome do Coworking"
                         />
                     </div>
                     <div className="card-content-inputs">
@@ -116,7 +119,7 @@ export const EditCentroDeInovacaoAdmin = () => {
                             type="text"
                             value={cidade}
                             onChange={(e) => setCidade(e.target.value)}
-                            placeholder="Nome do Centro de Inovação"
+                            placeholder="Cidade do Coworking"
                         />
                     </div>
                     <div className="card-content-inputs">
@@ -126,17 +129,7 @@ export const EditCentroDeInovacaoAdmin = () => {
                             type="text"
                             value={endereco}
                             onChange={(e) => setEndereco(e.target.value)}
-                            placeholder="endereco do Centro de Inovação"
-                        />
-                    </div>
-                    <div className="card-content-inputs">
-                        <label htmlFor="cep">CEP</label>
-                        <input
-                            id="cep"
-                            type="number"
-                            value={cep}
-                            onChange={(e) => setCep(e.target.value)}
-                            placeholder="CEP do Centro de Inovação"
+                            placeholder="Endereço do Coworking"
                         />
                     </div>
                     <div className="card-content-inputs">
@@ -146,7 +139,7 @@ export const EditCentroDeInovacaoAdmin = () => {
                             type="text"
                             value={descricao}
                             onChange={(e) => setDescricao(e.target.value)}
-                            placeholder="descricao do Centro de Inovação"
+                            placeholder="Descrição do Coworking"
                         />
                     </div>
                     <div className="card-content-inputs">
@@ -156,7 +149,17 @@ export const EditCentroDeInovacaoAdmin = () => {
                             type="text"
                             value={estado}
                             onChange={(e) => setEstado(e.target.value)}
-                            placeholder="Estado do Centro de Inovação"
+                            placeholder="Estado do Coworking"
+                        />
+                    </div>
+                    <div className="card-content-inputs">
+                        <label htmlFor="cep">CEP</label>
+                        <input
+                            id="cep"
+                            type="number"
+                            value={cep}
+                            onChange={(e) => setCep(e.target.value)}
+                            placeholder="CEP do Coworking"
                         />
                     </div>
                     <div className="card-content-inputs">
@@ -164,8 +167,8 @@ export const EditCentroDeInovacaoAdmin = () => {
                         <input
                             id="dataFundacao"
                             type="date"
-                            value={dataFundacao} // Valor em yyyy-mm-dd, que é aceito pelo tipo date
-                            onChange={handleDateChange}
+                            value={formatDateToYYYYMMDD(dataFundacao)} // Formato compatível com o tipo date
+                            onChange={handleDateChange} // Atualiza no formato dd/mm/yyyy
                         />
                     </div>
                     <div className="card-content-inputs">
@@ -175,7 +178,7 @@ export const EditCentroDeInovacaoAdmin = () => {
                             type="number"
                             value={telefone}
                             onChange={(e) => setTelefone(e.target.value)}
-                            placeholder="telefone do Centro de Inovação"
+                            placeholder="Telefone do Coworking"
                         />
                     </div>
                     <div className="card-content-inputs">
@@ -185,7 +188,17 @@ export const EditCentroDeInovacaoAdmin = () => {
                             type="text"
                             value={link}
                             onChange={(e) => setLink(e.target.value)}
-                            placeholder="link do Centro de Inovação"
+                            placeholder="Site do Coworking"
+                        />
+                    </div>
+                    <div className="card-content-inputs">
+                        <label htmlFor="horario_funcionamento">Horário de funcionamento</label>
+                        <input
+                            id="horario_funcionamento"
+                            type="text"
+                            value={horario_funcionamento}
+                            onChange={(e) => setHorario_funcionamento(e.target.value)}
+                            placeholder="Horário de funcionamento do Coworking"
                         />
                     </div>
                     <button className="admin-edit-button" onClick={onConfirm}>

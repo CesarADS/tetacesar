@@ -17,6 +17,7 @@ export const AdicionarCentroDeInovacaoAdmin = () => {
     const [descricao, setDescricao] = useState("");
     const [link, setLink] = useState("");
     const [telefone, setTelefone] = useState("");
+    const [cep, setCep] = useState("");
 
     // Formata a data para dd/mm/yyyy
     const formatDateToDDMMYYYY = (date) => {
@@ -40,19 +41,25 @@ export const AdicionarCentroDeInovacaoAdmin = () => {
     };
 
     const onConfirm = async () => {
-        const fetchData = await axios.post("http://localhost:8080/CentrosInovacao/criar", {
-            cidade: cidade,
-            estado: estado,
-            nome: nome,
-            endereco: endereco,
-            cep: 456456464,
-            data: formatDateToYYYYMMDD(dataFundacao),
-            descricao: descricao,
-            link: link,
-            telefone: telefone
-        }, 
-        {headers: {Authorization: `Bearer ${token}`}})
-        navigate(-1)
+        
+        try{
+            const fetchData = await axios.post("http://localhost:8080/CentrosInovacao/criar", {
+                cidade: cidade,
+                estado: estado,
+                nome: nome,
+                endereco: endereco,
+                cep: cep,
+                data: formatDateToYYYYMMDD(dataFundacao),
+                descricao: descricao,
+                link: link,
+                telefone: telefone
+            }, 
+            {headers: {Authorization: `Bearer ${token}`}})
+            navigate(-1)
+            alert("Agente adicionado!")
+        } catch (error) {
+            alert("Algo deu errado!")
+        }
     };
 
     return (
@@ -64,7 +71,7 @@ export const AdicionarCentroDeInovacaoAdmin = () => {
                         <h1>Adicionar Centro de Inovação</h1>
                     </div>
                     <div className="card-content-inputs">
-                        <label htmlFor="nome">Nome do Centro de Inovação</label>
+                        <label htmlFor="nome">Nome</label>
                         <input
                             id="nome"
                             type="text"
@@ -80,31 +87,31 @@ export const AdicionarCentroDeInovacaoAdmin = () => {
                             type="text"
                             value={cidade}
                             onChange={(e) => setCidade(e.target.value)}
-                            placeholder="Nome do Centro de Inovação"
+                            placeholder="Cidade do Centro de Inovação"
                         />
                     </div>
                     <div className="card-content-inputs">
-                        <label htmlFor="endereco">endereco do Centro de Inovação</label>
+                        <label htmlFor="endereco">Endereço</label>
                         <input
                             id="endereco"
                             type="text"
                             value={endereco}
                             onChange={(e) => setEndereco(e.target.value)}
-                            placeholder="endereco do Centro de Inovação"
+                            placeholder="Endereço do Centro de Inovação"
                         />
                     </div>
                     <div className="card-content-inputs">
-                        <label htmlFor="descricao">descricao do Centro de Inovação</label>
+                        <label htmlFor="descricao">Descrição</label>
                         <input
                             id="descricao"
                             type="text"
                             value={descricao}
                             onChange={(e) => setDescricao(e.target.value)}
-                            placeholder="descricao do Centro de Inovação"
+                            placeholder="Descrição do Centro de Inovação"
                         />
                     </div>
                     <div className="card-content-inputs">
-                        <label htmlFor="estado">Estado do Centro de Inovação</label>
+                        <label htmlFor="estado">Estado</label>
                         <input
                             id="estado"
                             type="text"
@@ -114,7 +121,17 @@ export const AdicionarCentroDeInovacaoAdmin = () => {
                         />
                     </div>
                     <div className="card-content-inputs">
-                        <label htmlFor="dataFundacao">Data da Fundação</label>
+                        <label htmlFor="cep">CEP</label>
+                        <input
+                            id="cep"
+                            type="number"
+                            value={cep}
+                            onChange={(e) => setCep(e.target.value)}
+                            placeholder="CEP do Centro de Inovação"
+                        />
+                    </div>
+                    <div className="card-content-inputs">
+                        <label htmlFor="dataFundacao">Data de Fundação</label>
                         <input
                             id="dataFundacao"
                             type="date"
@@ -123,23 +140,23 @@ export const AdicionarCentroDeInovacaoAdmin = () => {
                         />
                     </div>
                     <div className="card-content-inputs">
-                        <label htmlFor="telefone">telefone do Centro de Inovação</label>
+                        <label htmlFor="telefone">Telefone</label>
                         <input
                             id="telefone"
                             type="number"
                             value={telefone}
                             onChange={(e) => setTelefone(e.target.value)}
-                            placeholder="telefone do Centro de Inovação"
+                            placeholder="Telefone do Centro de Inovação"
                         />
                     </div>
                     <div className="card-content-inputs">
-                        <label htmlFor="link">link do Centro de Inovação</label>
+                        <label htmlFor="link">Site</label>
                         <input
                             id="link"
                             type="text"
                             value={link}
                             onChange={(e) => setLink(e.target.value)}
-                            placeholder="link do Centro de Inovação"
+                            placeholder="Site do Centro de Inovação"
                         />
                     </div>
                     <button className="admin-edit-button" onClick={onConfirm}>
